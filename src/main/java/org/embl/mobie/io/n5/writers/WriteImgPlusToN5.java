@@ -44,8 +44,14 @@ import java.util.Map;
 public class WriteImgPlusToN5 {
 
     // export, generating default source transform, and default resolutions / subdivisions
-    public void export(ImagePlus imp, String xmlPath, DownsampleBlock.DownsamplingMethod downsamplingMethod,
-                       Compression compression) {
+    public void export( ImagePlus imp, String xmlPath, DownsampleBlock.DownsamplingMethod downsamplingMethod,
+                       Compression compression ) {
+        export( imp, xmlPath, downsamplingMethod, compression, null );
+    }
+
+    // export, generating default source transform, and default resolutions / subdivisions
+    public void export( ImagePlus imp, String xmlPath, DownsampleBlock.DownsamplingMethod downsamplingMethod,
+                       Compression compression, String[] viewSetupNames ) {
         if (!WriteImgPlusToN5Helper.isImageSuitable(imp)) {
             return;
         }
@@ -53,8 +59,8 @@ public class WriteImgPlusToN5 {
         FinalVoxelDimensions voxelSize = WriteImgPlusToN5Helper.getVoxelSize(imp);
         final AffineTransform3D sourceTransform = WriteImgPlusToN5Helper.generateSourceTransform(voxelSize);
 
-        Parameters defaultParameters = generateDefaultParameters(imp, xmlPath, sourceTransform, downsamplingMethod,
-                compression, null);
+        Parameters defaultParameters = generateDefaultParameters( imp, xmlPath, sourceTransform, downsamplingMethod,
+                compression, viewSetupNames );
 
         export(imp, defaultParameters);
     }
@@ -62,14 +68,7 @@ public class WriteImgPlusToN5 {
     // export, generating default resolutions / subdivisions
     public void export(ImagePlus imp, String xmlPath, AffineTransform3D sourceTransform,
                        DownsampleBlock.DownsamplingMethod downsamplingMethod, Compression compression) {
-        if (!WriteImgPlusToN5Helper.isImageSuitable(imp)) {
-            return;
-        }
-
-        Parameters defaultParameters = generateDefaultParameters(imp, xmlPath, sourceTransform,
-                downsamplingMethod, compression, null);
-
-        export(imp, defaultParameters);
+        export( imp, xmlPath, sourceTransform, downsamplingMethod, compression, null );
     }
 
     // export, generating default resolutions / subdivisions
@@ -86,10 +85,33 @@ public class WriteImgPlusToN5 {
         export(imp, defaultParameters);
     }
 
+    // export, generating default source transform
+    public void export(ImagePlus imp, int[][] resolutions, int[][] subdivisions, String xmlPath,
+                       DownsampleBlock.DownsamplingMethod downsamplingMethod,
+                       Compression compression) {
+        export(imp, resolutions, subdivisions, xmlPath, downsamplingMethod, compression, null);
+    }
+
+    // export, generating default source transform
+    public void export(ImagePlus imp, int[][] resolutions, int[][] subdivisions, String xmlPath,
+                       DownsampleBlock.DownsamplingMethod downsamplingMethod,
+                       Compression compression, String[] viewSetupNames) {
+        if (!WriteImgPlusToN5Helper.isImageSuitable(imp)) {
+            return;
+        }
+
+        FinalVoxelDimensions voxelSize = WriteImgPlusToN5Helper.getVoxelSize(imp);
+        final AffineTransform3D sourceTransform = WriteImgPlusToN5Helper.generateSourceTransform(voxelSize);
+
+        export(imp, resolutions, subdivisions, xmlPath, sourceTransform,
+                downsamplingMethod, compression, viewSetupNames);
+    }
+
     public void export(ImagePlus imp, int[][] resolutions, int[][] subdivisions, String xmlPath,
                        AffineTransform3D sourceTransform, DownsampleBlock.DownsamplingMethod downsamplingMethod,
                        Compression compression) {
-        export(imp, resolutions, subdivisions, xmlPath, sourceTransform, downsamplingMethod, compression, null);
+        export(imp, resolutions, subdivisions, xmlPath, sourceTransform, downsamplingMethod,
+                compression, null);
     }
 
     public void export(ImagePlus imp, int[][] resolutions, int[][] subdivisions, String xmlPath,

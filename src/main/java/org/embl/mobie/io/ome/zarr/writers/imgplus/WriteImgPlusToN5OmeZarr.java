@@ -35,6 +35,13 @@ public class WriteImgPlusToN5OmeZarr extends WriteImgPlusToN5 {
         super.export(imp, zarrPath, downsamplingMethod, compression);
     }
 
+    // export, generating default source transform, and default resolutions / subdivisions
+    @Override
+    public void export( ImagePlus imp, String zarrPath, DownsampleBlock.DownsamplingMethod downsamplingMethod,
+                        Compression compression, String[] viewSetupNames ) {
+        super.export( imp, zarrPath, downsamplingMethod, compression, viewSetupNames );
+    }
+
     // export, generating default resolutions / subdivisions
     @Override
     public void export(ImagePlus imp, String zarPath, AffineTransform3D sourceTransform,
@@ -51,11 +58,28 @@ public class WriteImgPlusToN5OmeZarr extends WriteImgPlusToN5 {
         super.export(imp, zarrPath, sourceTransform, downsamplingMethod, compression, viewSetupNames);
     }
 
+    // export, generating default source transform
     @Override
-    public void export(ImagePlus imp, int[][] resolutions, int[][] subdivisions, String zarrPath,
+    public void export( ImagePlus imp, int[][] resolutions, int[][] subdivisions, String zarrPath,
+                       DownsampleBlock.DownsamplingMethod downsamplingMethod,
+                       Compression compression ) {
+        super.export( imp, resolutions, subdivisions, zarrPath, downsamplingMethod, compression );
+    }
+
+    // export, generating default source transform
+    @Override
+    public void export( ImagePlus imp, int[][] resolutions, int[][] subdivisions, String zarrPath,
+                       DownsampleBlock.DownsamplingMethod downsamplingMethod,
+                       Compression compression, String[] viewSetupNames ) {
+        super.export( imp, resolutions, subdivisions, zarrPath, downsamplingMethod, compression, viewSetupNames );
+    }
+
+    @Override
+    public void export( ImagePlus imp, int[][] resolutions, int[][] subdivisions, String zarrPath,
                        AffineTransform3D sourceTransform, DownsampleBlock.DownsamplingMethod downsamplingMethod,
-                       Compression compression) {
-        export(imp, resolutions, subdivisions, zarrPath, sourceTransform, downsamplingMethod, compression, null);
+                       Compression compression ) {
+        export( imp, resolutions, subdivisions, zarrPath, sourceTransform, downsamplingMethod,
+                compression, null );
     }
 
     @Override
